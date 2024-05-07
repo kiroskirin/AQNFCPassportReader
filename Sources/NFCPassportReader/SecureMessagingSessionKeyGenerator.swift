@@ -10,9 +10,9 @@ import Foundation
 import CryptoKit
 
 @available(iOS 13, macOS 10.15, *)
-class SecureMessagingSessionKeyGenerator {
-    static let NO_PACE_KEY_REFERENCE : UInt8 = 0x00
-    enum SMSMode : UInt8 {
+public class SecureMessagingSessionKeyGenerator {
+    public static let NO_PACE_KEY_REFERENCE : UInt8 = 0x00
+    public enum SMSMode : UInt8 {
         case ENC_MODE = 0x1;
         case MAC_MODE = 0x2;
         case PACE_MODE = 0x3;
@@ -23,7 +23,7 @@ class SecureMessagingSessionKeyGenerator {
     /// - Parameter mode either <code>ENC_MODE</code> or <code>MAC_MODE</code>
     /// - Returns the key.
     /// - Throws InvalidDataPassed on data error
-    func deriveKey( keySeed : [UInt8], mode : SMSMode) throws -> [UInt8] {
+    public func deriveKey( keySeed : [UInt8], mode : SMSMode) throws -> [UInt8] {
         return try deriveKey(keySeed: keySeed, cipherAlgName: "DESede", keyLength: 128, mode: mode);
     }
     
@@ -34,7 +34,7 @@ class SecureMessagingSessionKeyGenerator {
     /// - Parameter mode either {@code ENC_MODE}, {@code MAC_MODE}, or {@code PACE_MODE}
     /// - Returns the key.
     /// - Throws InvalidDataPassed on data error
-    func deriveKey(keySeed : [UInt8], cipherAlgName :String, keyLength : Int, mode : SMSMode) throws  -> [UInt8] {
+    public func deriveKey(keySeed : [UInt8], cipherAlgName :String, keyLength : Int, mode : SMSMode) throws  -> [UInt8] {
         return try deriveKey(keySeed: keySeed, cipherAlgName: cipherAlgName, keyLength: keyLength, nonce: nil, mode: mode);
     }
     
@@ -46,7 +46,7 @@ class SecureMessagingSessionKeyGenerator {
     /// - Parameter mode the mode either {@code ENC}, {@code MAC}, or {@code PACE} mode
     /// - Returns the key.
     /// - Throws InvalidDataPassed on data error
-    func deriveKey(keySeed : [UInt8], cipherAlgName :String, keyLength : Int, nonce : [UInt8]? = nil, mode : SMSMode) throws -> [UInt8]  {
+    public func deriveKey(keySeed : [UInt8], cipherAlgName :String, keyLength : Int, nonce : [UInt8]? = nil, mode : SMSMode) throws -> [UInt8]  {
         return try deriveKey(keySeed: keySeed, cipherAlgName: cipherAlgName, keyLength: keyLength, nonce: nonce, mode: mode, paceKeyReference: SecureMessagingSessionKeyGenerator.NO_PACE_KEY_REFERENCE);
     }
 
@@ -59,7 +59,7 @@ class SecureMessagingSessionKeyGenerator {
     /// - Parameter paceKeyReference Key Reference For Pace Protocol
     /// - Returns the key.
     /// - Throws InvalidDataPassed on data error
-    func deriveKey(keySeed : [UInt8], cipherAlgName :String, keyLength : Int, nonce : [UInt8]?, mode : SMSMode, paceKeyReference : UInt8) throws ->  [UInt8] {
+    public func deriveKey(keySeed : [UInt8], cipherAlgName :String, keyLength : Int, nonce : [UInt8]?, mode : SMSMode, paceKeyReference : UInt8) throws ->  [UInt8] {
         let digestAlgo = try inferDigestAlgorithmFromCipherAlgorithmForKeyDerivation(cipherAlg: cipherAlgName, keyLength: keyLength);
         
         let modeArr : [UInt8] = [0x00, 0x00, 0x00, mode.rawValue]
@@ -100,7 +100,7 @@ class SecureMessagingSessionKeyGenerator {
         return keyBytes
     }
     
-    func inferDigestAlgorithmFromCipherAlgorithmForKeyDerivation( cipherAlg : String, keyLength : Int) throws -> String {
+    public func inferDigestAlgorithmFromCipherAlgorithmForKeyDerivation( cipherAlg : String, keyLength : Int) throws -> String {
         if cipherAlg == "DESede" || cipherAlg == "AES-128" {
             return "SHA1";
         }
@@ -119,7 +119,7 @@ class SecureMessagingSessionKeyGenerator {
     
     /// This generates a SHA-X hash based on the passed in algo.
     /// There must be a more generic way to do this?
-    func  getHash(algo: String, dataElements:[Data] ) throws -> [UInt8] {
+    public func  getHash(algo: String, dataElements:[Data] ) throws -> [UInt8] {
         var hash : [UInt8]
         
         let algo = algo.lowercased()

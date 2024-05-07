@@ -65,7 +65,7 @@ public class BACHandler {
     }
 
 
-    func deriveDocumentBasicAccessKeys(mrz: String) throws -> ([UInt8], [UInt8]) {
+    public func deriveDocumentBasicAccessKeys(mrz: String) throws -> ([UInt8], [UInt8]) {
         let kseed = generateInitialKseed(kmrz:mrz)
     
         Logger.bac.debug("Calculate the Basic Access Keys (Kenc and Kmac) using TR-SAC 1.01, 4.2")
@@ -87,7 +87,7 @@ public class BACHandler {
     /// - Parameter kmrz: mrz key
     /// - Returns: first 16 bytes of the mrz SHA1 hash
     ///
-    func generateInitialKseed(kmrz : String ) -> [UInt8] {
+    public func generateInitialKseed(kmrz : String ) -> [UInt8] {
         
         Logger.bac.debug("Calculate the SHA-1 hash of MRZ_information")
         Logger.bac.debug("\tMRZ KEY - \(kmrz)")
@@ -114,7 +114,7 @@ public class BACHandler {
     /// @param rnd_icc: The challenge received from the ICC.
     /// @type rnd_icc: A 8 bytes binary string
     /// @return: The APDU binary data for the mutual authenticate command
-    func authentication( rnd_icc : [UInt8]) -> [UInt8] {
+    public func authentication( rnd_icc : [UInt8]) -> [UInt8] {
         self.rnd_icc = rnd_icc
         
         Logger.bac.debug("Request an 8 byte random number from the MRTD's chip")
